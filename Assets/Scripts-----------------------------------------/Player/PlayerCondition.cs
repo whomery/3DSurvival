@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public interface IDamagaIbe
@@ -16,6 +17,10 @@ public class PlayerCondition : MonoBehaviour , IDamagaIbe
     Condition hunger { get { return uiCondition.hunger; } }
     Condition stamina { get { return uiCondition.stamina; } }
 
+    Condition AddSpeed { get { return uiCondition.AddSpeed; } }
+
+
+
     public float noHungerGealthDecay;
 
     public event Action onTakeDamage;
@@ -29,7 +34,7 @@ public class PlayerCondition : MonoBehaviour , IDamagaIbe
     // Update is called once per frame
     void Update()
     {
-        
+        AddSpeed.Subtract(hunger.passiveValue * Time.deltaTime);
         hunger.Subtract(hunger.passiveValue * Time.deltaTime);
         stamina.Add(stamina.passiveValue * Time.deltaTime); 
 
@@ -53,6 +58,11 @@ public class PlayerCondition : MonoBehaviour , IDamagaIbe
     public void Eat (float amout)
     {
         hunger.Add(amout);
+    }
+    public void Eat2(float amout)
+    {
+        AddSpeed.Add(amout);
+
     }
 
     public void Die()

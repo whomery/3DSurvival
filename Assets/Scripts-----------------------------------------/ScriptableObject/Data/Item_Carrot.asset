@@ -24,3 +24,5 @@ MonoBehaviour:
     value: 20
   - type: 1
     value: 20
+  - type: 2
+    value: 20

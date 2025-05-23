@@ -210,6 +210,9 @@ public class UIInventory : MonoBehaviour
                     case ConsumableType.Hunger:
                         condition.Eat(selectedltem.consumables[i].value);
                         break;
+                    case ConsumableType.AddSpeed:
+                        condition.Eat2(selectedltem.consumables[i].value);
+                        break;
                 }
             }
             RemoveSelectedltem();

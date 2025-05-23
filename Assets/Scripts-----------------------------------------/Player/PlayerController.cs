@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
@@ -28,6 +29,12 @@ public class PlayerController : MonoBehaviour
 
     public Action inventory;
     private Rigidbody _rigidbody;
+
+    public UiCondition uiCondition;
+
+    public GameObject AddSpeed;
+    float SpeedUp;
+
     // Start is called before the first frame update
 
 
@@ -35,6 +42,7 @@ public class PlayerController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -42,8 +50,20 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void FixedUpdate()
-    {
-            Move();
+    { 
+        Condition condition = AddSpeed.GetComponent<Condition>();
+
+        float a = condition.curValue;
+        if (a > 0)
+        {
+            SpeedUp = 10f;
+        }
+        else
+        {
+            SpeedUp = 0f;
+        }
+
+        Move();
     }
     private void LateUpdate()
     {
@@ -53,10 +73,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+ 
+
     void Move()
     {
         Vector3 dir = transform.forward * curMovementInput.y + transform.right * curMovementInput.x;
-        dir *= moveSpeed;
+        dir *= (moveSpeed + SpeedUp);
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;
@@ -108,6 +130,7 @@ public class PlayerController : MonoBehaviour
             AddJumpPower = 0;
         }
     }
+    
 
     public void OnJump(InputAction.CallbackContext context)
     {
